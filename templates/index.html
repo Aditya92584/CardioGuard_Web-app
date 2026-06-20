@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardioGuard - KNN Heart Risk Analyzer</title>
+    <script src="../static/script.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <i class="fa-solid fa-heart-pulse"></i> CardioGuard <span style="font-size: 0.8rem; background: var(--primary); color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">KNN Engine</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#analyzer">Analyzer</a></li>
+                <li><a href="#about">Biomarkers</a></li>
+                <li><a href="#history">Session History</a></li>
+                <li><a href="#contact">Support</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1>Advanced Heart Risk Assessment</h1>
+            <div class="developer-badge" style="text-align: center; margin-bottom: 2rem;">
+                <span style="background: #eef2f7; color: #333; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500; border: 1px solid #dcdcdc;">
+                    Developed by: <strong>Aditya Srivastava</strong>
+                </span>
+            </div>
+            <p>By optimizing your clinical data patterns, our trained KNN model helps predict cardiac anomalies with better accuracy.</p>
+            <p>.</p>
+            <a href="#analyzer" class="btn btn-primary">Start Diagnosis <i class="fa-solid fa-arrow-down"></i></a>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Medical Diagnostics">
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="analyzer" class="analyzer-section">
+            <div class="section-title">
+                <h2>Cardiovascular Risk Analyzer</h2>
+                <p>To evaluate your heart health, please provide the 12 clinical parameters below. Your data is processed securely.</p>
+            </div>
+
+            <div class="grid-layout">
+                <div class="card glass-card form-card">
+                    <form id="predictionForm" onsubmit="return false;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="userName">User Name:</label>
+                                <input type="text" id="userName" name="userName" placeholder="Enter patient name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="age">Age (years)</label>
+                                <input type="number" id="age" name="age" min="1" max="120" placeholder="e.g., 45" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sex">Biological Sex</label>
+                                <select id="sex" name="sex" required>
+                                    <option value="" disabled selected>Select Sex</option>
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cp">Chest Pain Type <i class="fa-solid fa-circle-info" title="0: Typical Angina, 1: Atypical Angina, 2: Non-anginal, 3: Asymptomatic"></i></label>
+                                <select id="cp" name="cp" required>
+                                    <option value="" disabled selected>Select Pain Type</option>
+                                    <option value="0">Typical Angina</option>
+                                    <option value="1">Atypical Angina</option>
+                                    <option value="2">Non-Anginal Pain</option>
+                                    <option value="3">Asymptomatic</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="trestbps">Resting Blood Pressure (mm Hg)</label>
+                                <input type="number" id="trestbps" name="trestbps" min="50" max="250" placeholder="e.g., 120" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="chol">Serum Cholesterol (mg/dl)</label>
+                                <input type="number" id="chol" name="chol" min="100" max="600" placeholder="e.g., 200" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fbs">Fasting Blood Sugar > 120 mg/dl</label>
+                                <select id="fbs" name="fbs" required>
+                                    <option value="" disabled selected>Select Condition</option>
+                                    <option value="1">True ( > 120 mg/dl)</option>
+                                    <option value="0">False ( ≤ 120 mg/dl)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="restecg">Resting ECG Results</label>
+                                <select id="restecg" name="restecg" required>
+                                    <option value="" disabled selected>Select Result</option>
+                                    <option value="0">Normal</option>
+                                    <option value="1">ST-T Wave Abnormality</option>
+                                    <option value="2">Left Ventricular Hypertrophy</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="thalach">Max Heart Rate Achieved</label>
+                                <input type="number" id="thalach" name="thalach" min="60" max="220" placeholder="e.g., 150" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exang">Exercise Induced Angina</label>
+                                <select id="exang" name="exang" required>
+                                    <option value="" disabled selected>Select Option</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="oldpeak">ST Depression (Oldpeak)</label>
+                                <input type="number" id="oldpeak" name="oldpeak" step="0.1" min="0" max="10" placeholder="e.g., 1.5" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="slope">Slope of Peak Exercise ST</label>
+                                <select id="slope" name="slope" required>
+                                    <option value="" disabled selected>Select Slope</option>
+                                    <option value="0">Upsloping</option>
+                                    <option value="1">Flat</option>
+                                    <option value="2">Downsloping</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="resetBtn" class="btn btn-secondary">Reset Fields</button>
+                            <button type="submit" class="btn btn-primary">Analyze Report</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="results-column">
+                    <div id="resultOutput" class="card glass-card info-card">
+                        <div class="placeholder-result">
+                            <i class="fa-solid fa-heart-pulse heartbeat-icon"></i>
+                            <h3>Awaiting Form Submission</h3>
+                            <p>Provide the required health markers and click 'Analyze Report' to activate our smart prediction model.</p>
+                        </div>
+                        
+                        <div class="loader-container hidden" id="loader">
+                            <div class="spinner"></div>
+                            <p>Applying Standard Scaler & Running KNN Classifier...</p>
+                        </div>
+
+                        <div class="alert-card high-risk hidden" id="highRiskCard">
+                            <div class="alert-header">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <h3>High Risk of Heart Disease</h3>
+                            </div>
+                            <p>According to our KNN algorithm, your metrics match cardiac risk patterns. Please consult a doctor soon.</p>
+                            <div class="metric-badge" id="highRiskProb">Confidence: --</div>
+                        </div>
+
+                        <div class="alert-card low-risk hidden" id="lowRiskCard">
+                            <div class="alert-header">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <h3>Low Risk of Heart Disease</h3>
+                            </div>
+                            <p>Your clinical parameters are within normal limits. Keep maintaining a healthy lifestyle and regular exercise.</p>
+                            <div class="metric-badge" id="lowRiskProb">Confidence: --</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="section-title">
+                <h2>Understanding Cardiological Metrics</h2>
+                <p>Learn how these medical terms affect the predictions of the algorithm.</p>
+            </div>
+            <div class="about-grid">
+                <div class="card item-card">
+                    <i class="fa-solid fa-droplet text-primary"></i>
+                    <h3>Serum Cholesterol</h3>
+                    <p>Plaque buildup in blood vessels creates blockages, which increases heart risk.</p>
+                </div>
+                <div class="card item-card">
+                    <i class="fa-solid fa-gauge text-primary"></i>
+                    <h3>Resting BP</h3>
+                    <p>Blood pressure above 130 mm Hg puts extra pressure on heart tissues and arteries.</p>
+                </div>
+                <div class="card item-card">
+                    <i class="fa-solid fa-wave-square text-primary"></i>
+                    <h3>ST Depression (Oldpeak)</h3>
+                    <p>A drop in electro-cardiac waves during a stress test indicates heart stress or blockage leaks.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="history-section">
+            <div class="section-title">
+                <h2>Live Session Analytics Log</h2>
+                <p>Track record of all tests run during this active browser session.</p>
+            </div>
+            <div class="card glass-card table-responsive">
+                <table class="history-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Patient Name</th>
+                            <th>Age / Sex</th>
+                            <th>BP / Chol</th>
+                            <th>Max Heart Rate</th>
+                            <th>Risk Status (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        {% if patients %}
+                            {% for patient in patients %}
+                            <tr>
+                                <td>{{ patient.created_at.strftime('%I:%M %p') if patient.created_at else 'N/A' }}</td>
+                                <td>{{ patient.user_name }}</td>
+                                <td>{{ patient.age }} / {% if patient.biological_sex == 1 %}M{% else %}F{% endif %}</td>
+                                <td>{{ patient.resting_blood_pressure }} / {{ patient.serum_cholesterol }}</td>
+                                <td>{{ patient.max_heart_rate }}</td>
+                                <td>
+                                    {% if patient.prediction_result == 1 %}
+                                        <span style="color: #ff4d4d; font-weight: bold;">Risk Detected</span>
+                                    {% else %}
+                                        <span style="color: #2ecc71; font-weight: bold;">Normal</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr id="emptyHistoryRow">
+                                <td colspan="6" style="text-align: center; color: var(--text-muted);">No prediction tests have been run in this session yet.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="section-title">
+                <h2>Technical Desk Support</h2>
+                <p>Get in touch with the support team in case of system deployment or inference errors.</p>
+            </div>
+            <div class="contact-wrapper">
+                <div class="card glass-card info-card contact-info" style="text-align: center;">
+                    <h3>CardioGuard Platform Integration</h3>
+                    <p><i class="fa-solid fa-envelope"></i> adityasrivastava.edu@gmail.com</p>
+                    <p><i class="fa-solid fa-server"></i> CardioGuard Engine: <strong>Active</strong></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a href="https://www.linkedin.com/in/aditya-srivastava-253b16334/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/Aditya92584" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        <p>&copy; 2026 CardioGuard Machine Learning Dashboard. All Medical References are for demonstration verification purposes.</p>
+    </footer>
+
+</body>
+</html>
