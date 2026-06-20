@@ -13,7 +13,7 @@ scaler = None
 
 try:
     if os.path.exists(model_path) and os.path.exists(scaler_path):
-        # pickle.load ki jagah joblib.load use karein
+   
         model = joblib.load(model_path)
         scaler = joblib.load(scaler_path)
         print(" ML Models and Scaler loaded successfully using Joblib!")
