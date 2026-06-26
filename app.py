@@ -3,29 +3,31 @@ import numpy as np
 import joblib  
 from flask import Flask, request, jsonify, render_template
 import MySQLdb  
+from dotenv import load_dotenv  # <-- Naya Secure Import
+
+# .env file se secrets load karne ke liye
+load_dotenv()
 
 app = Flask(__name__)
 
-# Model and Scaler File Paths
 model_path = 'KNN_heart.pkl'
 scaler_path = 'scaler.pkl'
-
 model = None
 scaler = None
 
-# --- RAILWAY.APP PUBLIC CLOUD CONNECTION ---
+# --- SECURE RAILWAY.APP CONNECTION ---
 def get_db_connection():
     try:
         connection = MySQLdb.connect(
             host='turntable.proxy.rlwy.net',                     
             port=46218,                                          
             user='root',                                         
-            passwd='gGwzXApZzKRqEscwjwaJnVehCalastoy',          
+            passwd=os.getenv('DB_PASSWORD'),  # <-- Password ab bilkul safe hai! Github par nahi dikhega
             db='railway'                                         
         )
         return connection
     except Exception as e:
-        print(f" Railway Cloud Database Connection Error: {e}")
+        print(f"❌ Railway Cloud Database Connection Error: {e}")
         return None
 
 # Load ML Model and Scaler safely
