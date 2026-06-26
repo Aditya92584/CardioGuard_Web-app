@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, render_template
 import MySQLdb  
 from dotenv import load_dotenv  # <-- Naya Secure Import
 
-# .env file se secrets load karne ke liye
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -15,22 +15,22 @@ scaler_path = 'scaler.pkl'
 model = None
 scaler = None
 
-# --- SECURE RAILWAY.APP CONNECTION ---
+
 def get_db_connection():
     try:
         connection = MySQLdb.connect(
             host='turntable.proxy.rlwy.net',                     
             port=46218,                                          
             user='root',                                         
-            passwd=os.getenv('DB_PASSWORD'),  # <-- Password ab bilkul safe hai! Github par nahi dikhega
+            passwd=os.getenv('DB_PASSWORD'),  
             db='railway'                                         
         )
         return connection
     except Exception as e:
-        print(f"❌ Railway Cloud Database Connection Error: {e}")
+        print(f" Railway Cloud Database Connection Error: {e}")
         return None
 
-# Load ML Model and Scaler safely
+
 try:
     if os.path.exists(model_path) and os.path.exists(scaler_path):
         model = joblib.load(model_path)
@@ -53,7 +53,7 @@ def predict():
         if not data:
             return jsonify({"success": False, "error": "No data received"})
 
-        # Fetch form data inputs securely
+        
         username = data.get('username') or 'Guest User'
         age = int(data.get('age', 40))
         sex = int(data.get('sex', 1))      
@@ -67,7 +67,7 @@ def predict():
         oldpeak = float(data.get('oldpeak', 0.0))
         slope = int(data.get('st_slope', 0))    
         
-        # Features Pipeline array mapping
+      
         features = [
             float(age), float(trestbps), float(chol), float(fbs), float(thalach), float(oldpeak),
             1.0 if sex == 1 else 0.0, 1.0 if cp == 1 else 0.0, 1.0 if cp == 2 else 0.0, 1.0 if cp == 3 else 0.0,
@@ -87,7 +87,7 @@ def predict():
         else:
             prediction = 1 if (age > 50 or trestbps > 140 or chol > 240) else 0
 
-        # --- REMOTE GLOBAL CLOUD SAVE BLOCK ---
+
         db_conn = get_db_connection()
         if db_conn:
             try:
