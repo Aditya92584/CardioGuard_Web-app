@@ -2,7 +2,7 @@ import os
 import numpy as np
 import joblib  
 from flask import Flask, request, jsonify, render_template
-import MySQLdb  # Direct standard robust binary client handler for global cloud sync
+import MySQLdb  
 
 app = Flask(__name__)
 
@@ -13,19 +13,19 @@ scaler_path = 'scaler.pkl'
 model = None
 scaler = None
 
-# --- BRAND NEW RAILWAY.APP PUBLIC CLOUD CONNECTION ---
+# --- RAILWAY.APP PUBLIC CLOUD CONNECTION ---
 def get_db_connection():
     try:
         connection = MySQLdb.connect(
-            host='turntable.proxy.rlwy.net',                     # Public URL Host
-            port=46218,                                          # Verified Public External Port
-            user='root',                                         # Database Master User
-            passwd='gGwzXApZzKRqEscwjwaJnVehCalastoy',          # Verified Master Password
-            db='railway'                                         # Production Database
+            host='turntable.proxy.rlwy.net',                     
+            port=46218,                                          
+            user='root',                                         
+            passwd='gGwzXApZzKRqEscwjwaJnVehCalastoy',          
+            db='railway'                                         
         )
         return connection
     except Exception as e:
-        print(f"❌ Railway Cloud Database Connection Error: {e}")
+        print(f" Railway Cloud Database Connection Error: {e}")
         return None
 
 # Load ML Model and Scaler safely
@@ -33,11 +33,11 @@ try:
     if os.path.exists(model_path) and os.path.exists(scaler_path):
         model = joblib.load(model_path)
         scaler = joblib.load(scaler_path)
-        print("🚀 ML Models and Scaler loaded successfully!")
+        print(" ML Models and Scaler loaded successfully!")
     else:
-        print("⚠️ Warning: Model or Scaler file missing. Fallback prediction mode active.")
+        print(" Warning: Model or Scaler file missing. Fallback prediction mode active.")
 except Exception as joblib_error:
-    print(f"💥 Joblib Load Error: {joblib_error}")
+    print(f" Joblib Load Error: {joblib_error}")
 
 @app.route('/')
 def home():
@@ -101,9 +101,9 @@ def predict():
                 )
                 cursor.execute(insert_query, record_to_insert)
                 db_conn.commit()
-                print(f"💾 Global Data Saved Successfully to Railway Cloud: {username}")
+                print(f" Global Data Saved Successfully to Railway Cloud: {username}")
             except Exception as db_error:
-                print(f"❌ Failed to insert data into Railway Cloud Database: {db_error}")
+                print(f" Failed to insert data into Railway Cloud Database: {db_error}")
             finally:
                 cursor.close()
                 db_conn.close()
