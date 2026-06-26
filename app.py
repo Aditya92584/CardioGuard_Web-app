@@ -2,13 +2,13 @@ import os
 import numpy as np
 import joblib  
 from flask import Flask, request, jsonify, render_template
-import MySQLdb  
-from dotenv import load_dotenv  # <-- Naya Secure Import
+import pymysql 
 
+from dotenv import load_dotenv  
 
 load_dotenv()
-
 app = Flask(__name__)
+
 
 model_path = 'KNN_heart.pkl'
 scaler_path = 'scaler.pkl'
@@ -18,12 +18,13 @@ scaler = None
 
 def get_db_connection():
     try:
-        connection = MySQLdb.connect(
+        connection = pymysql.connect(
             host='turntable.proxy.rlwy.net',                     
             port=46218,                                          
             user='root',                                         
-            passwd=os.getenv('DB_PASSWORD'),  
-            db='railway'                                         
+            password=os.getenv('DB_PASSWORD'),  # Environment variable safe password
+            database='railway',                                  
+            cursorclass=pymysql.cursors.DictCursor  # Modern cursor handling
         )
         return connection
     except Exception as e:
